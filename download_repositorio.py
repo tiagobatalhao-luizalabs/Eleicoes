@@ -14,17 +14,18 @@ def url_patterns():
         'candidatos_cassacoes': 'motivo_cassacao/motivo_cassacao_{ano}.zip',
         'eleitorado_perfil': 'perfil_eleitorado/perfil_eleitorado_{ano}.zip',
         'eleitorado_deficiencia': 'perfil_eleitor_deficiente/perfil_eleitor_deficiencia_{ano}.zip',
-        'eleitorado_secao': 'perfil_eleitor_secao/perfil_eleitor_secao_{ano}_{estado}.zip',
         'votacao_zona_nominal': 'votacao_candidato_munzona/votacao_candidato_munzona_{ano}.zip',
         'votacao_zona_partido': 'votacao_partido_munzona/votacao_partido_munzona_{ano}.zip',
-        'votacao_secao': 'votacao_secao/votacao_secao_{ano}_{estado}.zip',
         'votacao_detalhe_zona': 'detalhe_votacao_munzona/detalhe_votacao_munzona_{ano}.zip',
-        'votacao_detalhe_secao': 'detalhe_votacao_secao/detalhe_votacao_secao_{ano}.zip',
         'pesquisa_lista': 'pesquisa_eleitoral/pesquisa_eleitoral_{ano}.zip',
         'pesquisa_notasfiscais': 'pesquisa_eleitoral/nota_fiscal_{ano}.zip',
         'pesquisa_questionarios': 'pesquisa_eleitoral/questionario_pesquisa_{ano}.zip',
         'pesquisa_locais': 'pesquisa_eleitoral/bairro_municipio_{ano}.zip',
     }
+    if False:
+        urls_download['eleitorado_secao']: = 'perfil_eleitor_secao/perfil_eleitor_secao_{ano}_{estado}.zip'
+        urls_download['votacao_secao']: = 'votacao_secao/votacao_secao_{ano}_{estado}.zip'
+        urls_download['votacao_detalhe_secao']: = 'detalhe_votacao_secao/detalhe_votacao_secao_{ano}.zip'
     urls = {x: url_base + y for x,y in urls_download.items()}
     return urls
 
