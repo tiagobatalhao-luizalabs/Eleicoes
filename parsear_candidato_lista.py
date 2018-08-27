@@ -429,8 +429,7 @@ def limpa_string(s):
     elif s.startswith('#n') or s.startswith('#N'):
         return ''
     else:
-        return s
-
+        return s.strip()
 
 def normalizar_eleicao_descricao(dado):
     ls = dado['Eleicao_descricao'].unique()
@@ -444,20 +443,21 @@ def normalizar_eleicao_descricao(dado):
         'Eleições Gerais 2014': 27,
         'Eleições Municipais 2016': 28,
         'Eleições Gerais Estaduais 2018': 29,
-        'Eleição Geral Federal 2018': 29,
+        'Eleição Geral Federal 2018': 30,
         'nan': -1,
     }
     dic = {
         -1: '',
-        21: 'Eleições 2002',
-        22: 'Eleições 2004',
-        23: 'Eleições 2006',
-        24: 'Eleições 2008',
-        25: 'Eleições 2010',
-        26: 'Eleições 2012',
-        27: 'Eleições 2014',
-        28: 'Eleições 2016',
-        29: 'Eleições 2018',
+        21: 'ELEICOES 2002',
+        22: 'ELEICOES 2004',
+        23: 'ELEICOES 2006',
+        24: 'ELEICOES 2008',
+        25: 'ELEICOES 2010',
+        26: 'ELEIÇÃO MUNICIPAL 2012',
+        27: 'Eleições Gerais 2014',
+        28: 'Eleições Municipais 2016',
+        29: 'Eleições Gerais Estaduais 2018',
+        30: 'Eleição Geral Federal 2018',
     }
     outras = sorted([x for x in ls if x not in codigo_tse_dict.keys()])
     for i,label in enumerate(outras):
