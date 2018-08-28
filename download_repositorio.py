@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import requests
 import zipfile
 import io
 import os
+import fnmatch
 from datetime import datetime
 
 def url_patterns():
@@ -14,18 +17,17 @@ def url_patterns():
         'candidatos_cassacoes': 'motivo_cassacao/motivo_cassacao_{ano}.zip',
         'eleitorado_perfil': 'perfil_eleitorado/perfil_eleitorado_{ano}.zip',
         'eleitorado_deficiencia': 'perfil_eleitor_deficiente/perfil_eleitor_deficiencia_{ano}.zip',
+        'eleitorado_secao': 'perfil_eleitor_secao/perfil_eleitor_secao_{ano}_{estado}.zip',
         'votacao_zona_nominal': 'votacao_candidato_munzona/votacao_candidato_munzona_{ano}.zip',
         'votacao_zona_partido': 'votacao_partido_munzona/votacao_partido_munzona_{ano}.zip',
-        'votacao_detalhe_zona': 'detalhe_votacao_munzona/detalhe_votacao_munzona_{ano}.zip',
+        'votacao_zona_detalhe': 'detalhe_votacao_munzona/detalhe_votacao_munzona_{ano}.zip',
+        'votacao_secao': 'votacao_secao/votacao_secao_{ano}_{estado}.zip',
+        'votacao_secao_detalhe': 'detalhe_votacao_secao/detalhe_votacao_secao_{ano}.zip',
         'pesquisa_lista': 'pesquisa_eleitoral/pesquisa_eleitoral_{ano}.zip',
         'pesquisa_notasfiscais': 'pesquisa_eleitoral/nota_fiscal_{ano}.zip',
         'pesquisa_questionarios': 'pesquisa_eleitoral/questionario_pesquisa_{ano}.zip',
         'pesquisa_locais': 'pesquisa_eleitoral/bairro_municipio_{ano}.zip',
     }
-    if False:
-        urls_download['eleitorado_secao']: = 'perfil_eleitor_secao/perfil_eleitor_secao_{ano}_{estado}.zip'
-        urls_download['votacao_secao']: = 'votacao_secao/votacao_secao_{ano}_{estado}.zip'
-        urls_download['votacao_detalhe_secao']: = 'detalhe_votacao_secao/detalhe_votacao_secao_{ano}.zip'
     urls = {x: url_base + y for x,y in urls_download.items()}
     return urls
 
@@ -82,13 +84,16 @@ def download_file(base_folder, label, url):
         zipp = zipfile.ZipFile(io.BytesIO(req.content))
         zipp.extractall()
 
-def main():
-    base_folder = os.path.abspath('./Arquivos')
+def download_files(folder_save, wildcard_pattern, download_secao=False):
+    now = lambda : datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    base_folder = os.path.abspath(folder_save)
     files = list_zip_files()
-    for label, url in files.items():
-        download_file(base_folder, label, url)
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print('[{}] Downloaded {}'.format(now, label))
+    labels = fnmatch.filter(files.keys(), wildcard_pattern)
+    for label in labels:
+        if (download_secao or '_secao' not in label):
+            print('[{}] Downloading {} ...'.format(now(), label))
+            download_file(base_folder, label, files[label])
+            print('[{}] Downloaded {} .'.format(now(), label))
 
 if __name__=='__main__':
-    main()
+    download_files('./Arquivos', 'candidatos_*_2018', False)
